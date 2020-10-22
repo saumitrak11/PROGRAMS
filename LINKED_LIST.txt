@@ -1,0 +1,251 @@
+
+  1  public class MyLinkedList<E> implements MyList<E> {
+  2    private Node<E> head, tail;
+  3    private int size = 0; // Number of elements in the list
+  4    
+  5    /** Create an empty list */
+  6    public MyLinkedList() {
+  7    }
+  8  
+  9    /** Create a list from an array of objects */
+ 10    public MyLinkedList(E[] objects) {
+ 11      for (int i = 0; i < objects.length; i++)
+ 12        add(objects[i]); 
+ 13    }
+ 14  
+ 15    /** Return the head element in the list */
+ 16    public E getFirst() {
+ 17      if (size == 0) {
+ 18        return null;
+ 19      }
+ 20      else {
+ 21        return head.element;
+ 22      }
+ 23    }
+ 24  
+ 25    /** Return the last element in the list */
+ 26    public E getLast() {
+ 27      if (size == 0) {
+ 28        return null;
+ 29      }
+ 30      else {
+ 31        return tail.element;
+ 32      }
+ 33    }
+ 34  
+ 35    /** Add an element to the beginning of the list */
+ 36    public void addFirst(E e) {
+ 37      Node<E> newNode = new Node<>(e); // Create a new node
+ 38      newNode.next = head; // link the new node with the head
+ 39      head = newNode; // head points to the new node
+ 40      size++; // Increase list size
+ 41  
+ 42      if (tail == null) // the new node is the only node in list
+ 43        tail = head;
+ 44    }
+ 45  
+ 46    /** Add an element to the end of the list */
+ 47    public void addLast(E e) {
+ 48      Node<E> newNode = new Node<>(e); // Create a new for element e
+ 49  
+ 50      if (tail == null) {
+ 51        head = tail = newNode; // The new node is the only node in list
+ 52      }
+ 53      else {
+ 54        tail.next = newNode; // Link the new with the last node
+ 55        tail = newNode; // tail now points to the last node
+ 56      }
+ 57  
+ 58      size++; // Increase size
+ 59    }
+ 60  
+ 61    @Override /** Add a new element at the specified index 
+ 62     * in this list. The index of the head element is 0 */
+ 63    public void add(int index, E e) {
+ 64      if (index == 0) {
+ 65        addFirst(e);
+ 66      }
+ 67      else if (index >= size) {
+ 68        addLast(e);
+ 69      }
+ 70      else {
+ 71        Node<E> current = head;
+ 72        for (int i = 1; i < index; i++) {
+ 73          current = current.next;
+ 74        }
+ 75        Node<E> temp = current.next;
+ 76        current.next = new Node<>(e);
+ 77        (current.next).next = temp;
+ 78        size++;
+ 79      }
+ 80    }
+ 81  
+ 82    /** Remove the head node and
+ 83     *  return the object that is contained in the removed node. */
+ 84    public E removeFirst() {
+ 85      if (size == 0) {
+ 86        return null;
+ 87      }
+ 88      else {
+ 89        E temp = head.element;
+ 90        head = head.next;
+ 91        size--;
+ 92        if (head == null) {
+ 93          tail = null;
+ 94        }
+ 95        return temp;
+ 96      }
+ 97    }
+ 98  
+ 99    /** Remove the last node and
+100     * return the object that is contained in the removed node. */
+101    public E removeLast() {
+102      if (size == 0) {
+103        return null;
+104      }
+105      else if (size == 1) {
+106        E temp = head.element;
+107        head = tail = null;
+108        size = 0;
+109        return temp;
+110      }
+111      else {
+112        Node<E> current = head;
+113  
+114        for (int i = 0; i < size - 2; i++) {
+115          current = current.next;
+116        }
+117  
+118        E temp = tail.element;
+119        tail = current;
+120        tail.next = null;
+121        size--;
+122        return temp;
+123      }
+124    }
+125  
+126    @Override /** Remove the element at the specified position in this 
+127     *  list. Return the element that was removed from the list. */
+128    public E remove(int index) {   
+129      if (index < 0 || index >= size) {
+130        return null;
+131      }
+132      else if (index == 0) {
+133        return removeFirst();
+134      }
+135      else if (index == size - 1) {
+136        return removeLast();
+137      }
+138      else {
+139        Node<E> previous = head;
+140  
+141        for (int i = 1; i < index; i++) {
+142          previous = previous.next;
+143        }
+144  
+145        Node<E> current = previous.next;
+146        previous.next = current.next;
+147        size--;
+148        return current.element;
+149      }
+150    }
+151  
+152    @Override /** Override toString() to return elements in the list */
+153    public String toString() {
+154      StringBuilder result = new StringBuilder("[");
+155  
+156      Node<E> current = head;
+157      for (int i = 0; i < size; i++) {
+158        result.append(current.element);
+159        current = current.next;
+160        if (current != null) {
+161          result.append(", "); // Separate two elements with a comma
+162        }
+163        else {
+164          result.append("]"); // Insert the closing ] in the string
+165        }
+166      }
+167  
+168      return result.toString();
+169    }
+170  
+171    @Override /** Clear the list */
+172    public void clear() {
+173      size = 0;
+174      head = tail = null;
+175    }
+176  
+177    @Override /** Return true if this list contains the element e */
+178    public boolean contains(Object e) {
+179      // Left as an exercise 
+180      return true;
+181    }
+182  
+183    @Override /** Return the element at the specified index */
+184    public E get(int index) {
+185      // Left as an exercise 
+186      return null;
+187    }
+188  
+189    @Override /** Return the index of the head matching element in 
+190     *  this list. Return -1 if no match. */
+191    public int indexOf(Object e) {
+192      // Left as an exercise
+193      return 0;
+194    }
+195  
+196    @Override /** Return the index of the last matching element in 
+197     *  this list. Return -1 if no match. */
+198    public int lastIndexOf(E e) {
+199      // Left as an exercise
+200      return 0;
+201    }
+202  
+203    @Override /** Replace the element at the specified position 
+204     *  in this list with the specified element. */
+205    public E set(int index, E e) {
+206      // Left as an exercise
+207      return null;
+208    }
+209  
+210    @Override /** Override iterator() defined in Iterable */
+211    public java.util.Iterator<E> iterator() {
+212      return new LinkedListIterator();
+213    }
+214    
+215    private class LinkedListIterator 
+216        implements java.util.Iterator<E> {
+217      private Node<E> current = head; // Current index 
+218      
+219      @Override
+220      public boolean hasNext() {
+221        return (current != null);
+222      }
+223  
+224      @Override
+225      public E next() {
+226        E e = current.element;
+227        current = current.next;
+228        return e;
+229      }
+230  
+231      @Override
+232      public void remove() {
+233        // Left as an exercise
+234      }
+235    }
+236    
+237    private static class Node<E> {
+238      E element;
+239      Node<E> next;
+240  
+241      public Node(E element) {
+242        this.element = element;
+243      }
+244    }
+245    
+246    @Override /** Return the number of elements in this list */
+247    public int size() {
+248      return size;
+249    }
+250  }
